@@ -8,7 +8,10 @@ class Meeple:
         self.perfect_pair = color
 
     def check_pair(self, color):
-        pass
+        if(self.perfect_pair == color):
+            return True
+        else:
+            return False
 
     def __str__(self):
         return f"{self.color} meeple, perfect match is {self.perfect_pair}."
@@ -38,3 +41,14 @@ if __name__ == "__main__":
     random.seed(1)
     for meeple in initialize_meeple():
         print(meeple)
+        
+    print()
+    print()
+    print()
+
+    meeple_array = initialize_meeple()
+    for meeple in initialize_meeple():
+        print(meeple)
+    
+    print(meeple_array[0].check_pair(meeple_array[1].color))
+    print(meeple_array[0].check_pair(meeple_array[2].color))
