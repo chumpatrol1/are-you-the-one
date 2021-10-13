@@ -29,3 +29,6 @@ def draw_main_menu(game_display, selector_position):
     text_rect = text_box.get_rect()
     text_rect.center = (683, 200)
     game_display.blit(text_box, text_rect)
+
+def draw_simulation_initial(game_display):
+    draw_background(game_display, 'main_menu')

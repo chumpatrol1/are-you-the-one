@@ -5,8 +5,11 @@ import ctypes
 from pygame import image
 from pygame.constants import FULLSCREEN, RESIZABLE
 from engine.handle_input import toggle_fullscreen
+from resources.graphics_engine.display_credits import draw_credits_screen
 from resources.graphics_engine.display_main_menu import draw_main_menu
 from json import loads, dumps
+
+from resources.graphics_engine.display_simulation import draw_simulation_initial
 
 cwd = os.getcwd()
 pg.quit()
@@ -53,7 +56,11 @@ def handle_graphics(game_state, main_cwd, info_getter):
     cwd = main_cwd
     if(game_state == "main_menu"):
         selector_position = info_getter[0]
-        draw_main_menu(screen_size, game_surface, selector_position)
+        draw_main_menu(game_surface, selector_position)
+    elif(game_state == "credits"):
+        draw_credits_screen(game_surface)
+    elif(game_state == "simulation_start"):
+        draw_simulation_initial(game_surface)
     
     global toggle_timer
     global full_screen

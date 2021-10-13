@@ -14,7 +14,7 @@ class Meeple:
             return False
 
     def __str__(self):
-        return f"{self.color} meeple, perfect match is {self.perfect_pair}."
+        return f"{self.color} meeple (perfect match is {self.perfect_pair})"
 
 def assign_matches(meeple_array):
     matched_array = []

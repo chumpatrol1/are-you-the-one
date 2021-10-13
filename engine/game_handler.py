@@ -16,6 +16,9 @@ def update_game_state(game_state, cwd):
     elif(game_state == "simulation_start"):
         info_getter = engine.meeple.initialize_meeple()
         game_state = "simulation"
+    elif(game_state == "credits"):
+        game_state = engine.menu.credits_waiter(timer)
+        info_getter = tuple()
     else:
         game_state = game_state
         info_getter = tuple()
