@@ -23,7 +23,7 @@ def make_random_pairings(meeple_array):
         temp_array.pop(random_num)
 
         pairing_array.append(Pairing(meepleA, meepleB))
-        print("Paired {} and {}".format(meepleA, meepleB))
+        #print("Paired {} and {}".format(meepleA, meepleB))
 
     first_decision = Decision(pairing_array)
         
@@ -56,11 +56,6 @@ def make_informed_pairings(meeple_array, true_pairs, false_pairs):
         if(good_pairings == 0): # If it's a bad result, reroll the pairs!
             new_random_pairings = make_random_pairings(temp_array).return_pairings()
         
-
-        
-
-
-
     new_guess = true_pairs + new_random_pairings
     return Decision(new_guess)
 
@@ -106,7 +101,12 @@ def handle_logic():
             false_pairs = new_false_pairs.copy()
 
         else:
-            false_pairs.append(pairing)
+            for f_pair in false_pairs:
+                if f_pair == pairing:
+                    break
+            else:
+                false_pairs.append(pairing)
+
 
 
 
