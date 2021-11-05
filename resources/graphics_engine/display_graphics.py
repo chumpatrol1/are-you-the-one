@@ -9,7 +9,7 @@ from resources.graphics_engine.display_credits import draw_credits_screen
 from resources.graphics_engine.display_main_menu import draw_main_menu
 from json import loads, dumps
 
-from resources.graphics_engine.display_simulation import draw_simulation_initial
+from resources.graphics_engine.display_simulation import draw_simulation_initial, draw_simulation_initial_wait, draw_simulation_logic
 
 cwd = os.getcwd()
 pg.quit()
@@ -61,6 +61,10 @@ def handle_graphics(game_state, main_cwd, info_getter):
         draw_credits_screen(game_surface)
     elif(game_state == "simulation_start"):
         draw_simulation_initial(game_surface)
+    elif(game_state == "simulation_start_wait"):
+        draw_simulation_initial_wait(game_surface, info_getter)
+    elif(game_state == "simulation_logic" or game_state == "simulation_logic_wait"):
+        draw_simulation_logic(game_surface, info_getter)
     
     global toggle_timer
     global full_screen

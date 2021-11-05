@@ -76,11 +76,14 @@ def handle_logic():
         truth_booth_check = truth_booth(pairing)
         print()
         print("Checked {}: {}".format(pairing, truth_booth_check))
-
-        if(truth_booth_check):
-            true_pairs.append(pairing)
+        if(decision_array[-1].return_match_num() == 0):
+            for pair in decision_array[-1].return_pairings():
+                false_pairs.append(pair)
         else:
-            false_pairs.append(pairing)
+            if(truth_booth_check):
+                true_pairs.append(pairing)
+            else:
+                false_pairs.append(pairing)
     else:
         decision_array.append(make_informed_pairings(meeple_array, true_pairs, false_pairs))
         pairings_list = decision_array[-1].return_pairings()[len(true_pairs):]
@@ -114,6 +117,22 @@ def handle_logic():
     
     round += 1
 
+def hold_meeple():
+    global meeple_array
+    if(meeple_array == []):
+        meeple_array = initialize_meeple()
+
+def return_meeple():
+    global meeple_array
+    return meeple_array
+
+def return_decision():
+    global decision_array
+    return decision_array[-1]
+
+def return_round():
+    global round
+    return round
 
 if __name__ == "__main__":
     print("BEGIN")

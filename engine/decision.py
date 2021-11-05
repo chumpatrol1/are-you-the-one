@@ -25,6 +25,9 @@ class Pairing:
         else: 
             return False
 
+    def return_meeple(self):
+        return self.meeple1, self.meeple2
+
 class Decision:
     def __init__(self, pairings = None):
         self.pairings = pairings
@@ -58,6 +61,9 @@ class Decision:
             return True
         else: 
             return False
+
+    def return_match_num(self):
+        return self.correct_matches
 
     def __str__(self):
         return "Correct Matches: {}, Pairings: {}".format(self.correct_matches, self.return_pairing_str())

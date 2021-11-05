@@ -47,3 +47,14 @@ def credits_waiter(timer):
     if(not timer) and ('p1_ability' in pressed or 'p2_ability' in pressed or 'return' in pressed):
         game_state = "main_menu"
     return game_state
+
+def simulation_advance(timer, game_state):
+    pressed = engine.handle_input.menu_input()
+    if(game_state == "simulation_start_wait"):
+        if(not timer) and ('p1_ability' in pressed or 'p2_ability' in pressed or 'return' in pressed):
+            game_state = "simulation_logic"
+    elif(game_state == "simulation_logic_wait"):
+        if(not timer) and ('p1_ability' in pressed or 'p2_ability' in pressed or 'return' in pressed):
+            game_state = "simulation_logic"
+    
+    return game_state

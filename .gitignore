@@ -1,3 +1,5 @@
 
 *.pyc
 *.pyc
+*.pyc
+resources/graphics_engine/__pycache__/display_main_menu.cpython-39.pyc
