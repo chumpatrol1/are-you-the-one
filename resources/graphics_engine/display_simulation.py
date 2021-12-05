@@ -1,4 +1,6 @@
 from resources.graphics_engine.background_handler import draw_background as draw_background
+from engine.simulation import return_truth as return_truth
+from engine.simulation import return_round as return_round
 import pygame as pg
 from os import getcwd
 cwd = getcwd()
@@ -85,6 +87,7 @@ def draw_simulation_logic(game_display, info_getter):
     draw_background(game_display, 'main_menu')
     meeple_x = 200
     meeple_y = 200
+    truth_count = 0
     for pair in info_getter.return_pairings():
         box_x = meeple_x - 90
         box_y = meeple_y + 50
@@ -105,7 +108,12 @@ def draw_simulation_logic(game_display, info_getter):
                     meeple_x = 200
 
         if(pair.check_match()):
-            pairing_box = boxes['green']
+            if(pair in return_truth()):
+                pairing_box = boxes['green']
+                truth_count += 1
+            else:
+                pairing_box = boxes['black']
+
         else:
             pairing_box = boxes['red']
 
@@ -114,5 +122,47 @@ def draw_simulation_logic(game_display, info_getter):
     menu_font = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 80)
     text_box = menu_font.render('Correct Matches: ' + str(info_getter.return_match_num()), False, (0, 0, 150))
     text_rect = text_box.get_rect()
-    text_rect.center = (683, 100)
+    text_rect.center = (683, 75)
+    game_display.blit(text_box, text_rect)
+
+def draw_simulation_win(game_display, info_getter):
+    draw_background(game_display, 'main_menu')
+    meeple_x = 200
+    meeple_y = 200
+    truth_count = 0
+    for pair in info_getter.return_pairings():
+        box_x = meeple_x - 90
+        box_y = meeple_y + 50
+        for meeple in pair.return_meeple():
+            pg.draw.circle(game_display, color_to_tuple[meeple.color], (meeple_x, meeple_y), 75)
+            if(meeple.color == "black"):
+                pg.draw.circle(game_display, color_to_tuple['white'], (meeple_x, meeple_y), 75, width = 5)
+            else:
+                pg.draw.circle(game_display, color_to_tuple['black'], (meeple_x, meeple_y), 75, width = 5)
+
+
+            meeple_x += 200
+            if(meeple_x > 1200):
+                meeple_y += 200
+                if(meeple_y == 600):
+                    meeple_x = 400
+                else:
+                    meeple_x = 200
+
+        if(pair.check_match()):
+            if(pair in return_truth()):
+                pairing_box = boxes['green']
+                truth_count += 1
+            else:
+                pairing_box = boxes['black']
+
+        else:
+            pairing_box = boxes['red']
+
+        game_display.blit(pairing_box, (box_x, box_y))
+        
+    menu_font = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 80)
+    text_box = menu_font.render('Won in ' + str(return_round()) + " Rounds!", False, (0, 0, 150))
+    text_rect = text_box.get_rect()
+    text_rect.center = (683, 75)
     game_display.blit(text_box, text_rect)

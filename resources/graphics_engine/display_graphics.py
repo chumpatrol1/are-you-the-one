@@ -8,9 +8,7 @@ from engine.handle_input import toggle_fullscreen
 from resources.graphics_engine.display_credits import draw_credits_screen
 from resources.graphics_engine.display_main_menu import draw_main_menu
 from json import loads, dumps
-
-from resources.graphics_engine.display_simulation import draw_simulation_initial, draw_simulation_initial_wait, draw_simulation_logic
-
+from resources.graphics_engine.display_simulation import draw_simulation_initial, draw_simulation_initial_wait, draw_simulation_logic, draw_simulation_win
 cwd = os.getcwd()
 pg.quit()
 os.environ['SDL_VIDEO_CENTERED'] = '1'
@@ -65,6 +63,8 @@ def handle_graphics(game_state, main_cwd, info_getter):
         draw_simulation_initial_wait(game_surface, info_getter)
     elif(game_state == "simulation_logic" or game_state == "simulation_logic_wait"):
         draw_simulation_logic(game_surface, info_getter)
+    elif(game_state == "simulation_win"):
+        draw_simulation_win(game_surface, info_getter)
     
     global toggle_timer
     global full_screen

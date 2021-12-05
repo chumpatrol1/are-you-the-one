@@ -4,6 +4,8 @@ import engine.handle_input
 from engine.handle_input import reset_inputs
 from json import dumps
 from os import getcwd
+
+from engine.simulation import check_won_game, reset_simulation
 cwd = getcwd()
 
 pg.init()
@@ -55,6 +57,17 @@ def simulation_advance(timer, game_state):
             game_state = "simulation_logic"
     elif(game_state == "simulation_logic_wait"):
         if(not timer) and ('p1_ability' in pressed or 'p2_ability' in pressed or 'return' in pressed):
-            game_state = "simulation_logic"
+            if(check_won_game()):
+                game_state = "simulation_win"
+            else:
+                game_state = "simulation_logic"
     
+    return game_state
+
+def simulation_w_advance(timer, game_state):
+    pressed = engine.handle_input.menu_input()
+    if(not timer) and ('p1_ability' in pressed or 'p2_ability' in pressed or 'return' in pressed):
+        game_state = "main_menu"
+        reset_simulation()
+
     return game_state

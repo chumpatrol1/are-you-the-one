@@ -8,7 +8,21 @@ round = 0
 meeple_array = []
 decision_array = []
 true_pairs = []
-false_pairs = []
+false_pairs = {}
+
+def add_false_pairing(pairing):
+    global false_pairs
+    if not (pairing.meeple1.color in false_pairs):
+        false_pairs[pairing.meeple1.color] = set()
+        false_pairs[pairing.meeple1.color].add(pairing.meeple2.color)
+    else:
+        false_pairs[pairing.meeple1.color].add(pairing.meeple2.color)
+
+    if not (pairing.meeple2.color in false_pairs):
+        false_pairs[pairing.meeple2.color] = set()
+        false_pairs[pairing.meeple2.color].add(pairing.meeple1.color)
+    else:
+        false_pairs[pairing.meeple2.color].add(pairing.meeple1.color)
 
 def make_random_pairings(meeple_array):
     temp_array = meeple_array.copy()
@@ -32,12 +46,12 @@ def make_random_pairings(meeple_array):
 def make_informed_pairings(meeple_array, true_pairs, false_pairs):
     temp_array = meeple_array.copy()
     for true_pair in true_pairs:
-        print("TRUE:", true_pair)
+        #print("TRUE:", true_pair)
         temp_array.remove(true_pair.meeple1)
         temp_array.remove(true_pair.meeple2)
     
-    for false_pair in false_pairs:
-        print("FALSE:", false_pair)
+    #for false_pair in false_pairs:
+    #    print("FALSE:", false_pair)
 
     #Super inefficient lol
     new_random_pairings = make_random_pairings(temp_array).return_pairings()
@@ -46,8 +60,7 @@ def make_informed_pairings(meeple_array, true_pairs, false_pairs):
         good_pairings = 1 # Start out as good
 
         for new_pair in new_random_pairings: # Look through each pairing we made
-            for false_pair in false_pairs: # Looks through each false pairing (through truth booth)
-                if(false_pair == new_pair): # If they match, that's bad!
+            if new_pair.meeple1.color in false_pairs and new_pair.meeple2.color in false_pairs[new_pair.meeple1.color]: # Looks up with O(1) time
                     good_pairings = 0
                     break
             if good_pairings == 0:
@@ -74,48 +87,41 @@ def handle_logic():
         pairings_list = decision_array[0].return_pairings()
         pairing = random.choice(pairings_list)
         truth_booth_check = truth_booth(pairing)
-        print()
-        print("Checked {}: {}".format(pairing, truth_booth_check))
-        if(decision_array[-1].return_match_num() == 0):
+        #print("Checked {}: {}".format(pairing, truth_booth_check))
+        if(decision_array[-1].return_match_num() == len(true_pairs)):
             for pair in decision_array[-1].return_pairings():
-                false_pairs.append(pair)
+                add_false_pairing(pair)
         else:
             if(truth_booth_check):
                 true_pairs.append(pairing)
             else:
-                false_pairs.append(pairing)
+                add_false_pairing(pairing)
     else:
         decision_array.append(make_informed_pairings(meeple_array, true_pairs, false_pairs))
         pairings_list = decision_array[-1].return_pairings()[len(true_pairs):]
         pairing = random.choice(pairings_list)
         truth_booth_check = truth_booth(pairing)
-        print("Checked {}: {}".format(pairing, truth_booth_check))
-
+        #print("Checked {}: {}".format(pairing, truth_booth_check))
+        if(decision_array[-1].return_match_num() == len(true_pairs)):
+            for pair in decision_array[-1].return_pairings()[len(true_pairs):]:
+                add_false_pairing(pair)
         if(truth_booth_check):
             true_pairs.append(pairing)
-            new_false_pairs = []
-            for false_pair in false_pairs:
-                if(false_pair.meeple1 == pairing.meeple1) or (false_pair.meeple1 == pairing.meeple2)\
-                    or (false_pair.meeple2 == pairing.meeple1) or (false_pair.meeple2 == pairing.meeple2):
-                    continue
-                else:
-                    new_false_pairs.append(false_pair)
-
-            false_pairs = new_false_pairs.copy()
 
         else:
-            for f_pair in false_pairs:
-                if f_pair == pairing:
-                    break
+            if(pairing.meeple1.color in false_pairs and pairing.meeple2.color in false_pairs[pairing.meeple1.color]):
+                pass
             else:
-                false_pairs.append(pairing)
+                add_false_pairing(pairing)
 
-
-
-
-        print(len(true_pairs))
     
     round += 1
+
+
+def check_won_game():
+    if(decision_array[-1].return_match_num() == 8):
+        return True
+    return False
 
 def hold_meeple():
     global meeple_array
@@ -133,6 +139,22 @@ def return_decision():
 def return_round():
     global round
     return round
+
+def return_truth():
+    global true_pairs
+    return true_pairs
+
+def reset_simulation():
+    global round
+    global decision_array
+    global true_pairs
+    global false_pairs
+    global meeple_array
+    round = 0
+    decision_array = []
+    true_pairs = []
+    false_pairs = {}
+    meeple_array = []
 
 if __name__ == "__main__":
     print("BEGIN")
