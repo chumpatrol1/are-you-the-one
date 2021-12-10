@@ -9,6 +9,7 @@ meeple_array = []
 decision_array = []
 true_pairs = []
 false_pairs = {}
+tb_pair = None
 
 def add_false_pairing(pairing):
     global false_pairs
@@ -73,6 +74,8 @@ def make_informed_pairings(meeple_array, true_pairs, false_pairs):
     return Decision(new_guess)
 
 def truth_booth(pairing):
+    global tb_pair
+    tb_pair = pairing
     return pairing.check_match()
 
 def handle_logic():
@@ -88,8 +91,8 @@ def handle_logic():
         pairing = random.choice(pairings_list)
         truth_booth_check = truth_booth(pairing)
         #print("Checked {}: {}".format(pairing, truth_booth_check))
-        if(decision_array[-1].return_match_num() == len(true_pairs)):
-            for pair in decision_array[-1].return_pairings():
+        if(return_decision().return_match_num() == len(true_pairs)):
+            for pair in return_decision().return_pairings():
                 add_false_pairing(pair)
         else:
             if(truth_booth_check):
@@ -102,8 +105,8 @@ def handle_logic():
         pairing = random.choice(pairings_list)
         truth_booth_check = truth_booth(pairing)
         #print("Checked {}: {}".format(pairing, truth_booth_check))
-        if(decision_array[-1].return_match_num() == len(true_pairs)):
-            for pair in decision_array[-1].return_pairings()[len(true_pairs):]:
+        if(return_decision().return_match_num() == len(true_pairs)):
+            for pair in return_decision().return_pairings()[len(true_pairs):]:
                 add_false_pairing(pair)
         if(truth_booth_check):
             true_pairs.append(pairing)
@@ -119,7 +122,7 @@ def handle_logic():
 
 
 def check_won_game():
-    if(decision_array[-1].return_match_num() == 8):
+    if(return_decision().return_match_num() == 8):
         return True
     return False
 
@@ -127,6 +130,10 @@ def hold_meeple():
     global meeple_array
     if(meeple_array == []):
         meeple_array = initialize_meeple()
+
+def return_tb_pair():
+    global tb_pair
+    return tb_pair
 
 def return_meeple():
     global meeple_array
@@ -150,11 +157,13 @@ def reset_simulation():
     global true_pairs
     global false_pairs
     global meeple_array
+    global tb_pair
     round = 0
     decision_array = []
     true_pairs = []
     false_pairs = {}
     meeple_array = []
+    tb_pair = None
 
 if __name__ == "__main__":
     print("BEGIN")

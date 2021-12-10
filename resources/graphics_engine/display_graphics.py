@@ -28,7 +28,7 @@ except:
 display_width = 1024
 display_height = 576
 
-pg.display.set_caption('Blob Ball')
+pg.display.set_caption('Are You the One?')
 game_display = pg.display.set_mode((display_width, display_height)) # The canvas
 game_surface = pg.Surface((1366, 768))
 pg.display.set_icon(pg.image.load(cwd+"/resources/images/ico_blob.ico"))
@@ -77,7 +77,7 @@ def handle_graphics(game_state, main_cwd, info_getter):
             if(full_screen):
                 pg.display.quit()
                 pg.display.init()
-                pg.display.set_caption('Blob Ball')
+                pg.display.set_caption('Are You the One?')
                 game_display = pg.display.set_mode((display_width, display_height))
                 full_screen = False
             else: 

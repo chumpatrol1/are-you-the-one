@@ -8,6 +8,7 @@ def draw_credits_screen(game_display):
     menu_font = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 40)
     text_array = [
         menu_font.render('Program by Elijah "chumpatrol1" McLaughlin', False, (0, 0, 150)),
+        menu_font.render('Background Art by "Ellexium"', False, (0, 0, 150)), # He's an online friend, I don't wanna dox him without permission
         menu_font.render('Assigned by Professor Jake Scoggin', False, (0, 0, 150)),
         menu_font.render('CSE2050 Honors Assignment', False, (0, 0, 150))
     ]
